@@ -1,12 +1,28 @@
 # Claude Skills
 
-A shared repository for custom Claude skills (slash commands) available across Claude Desktop and Claude Code (terminal).
+A shared git repository for custom Claude skills, synced across **Claude Desktop** and **Claude Code (terminal)**.
 
-## How It Works
+Both platforms read from the same `~/.claude/skills/` folder — update once, available everywhere.
 
-Skills are `.md` files in the `commands/` folder. Each file becomes a slash command you can invoke as `/<filename>` in Claude.
+---
 
-## Setup
+## Skill Structure
+
+Each skill lives in its own folder under `skills/`:
+
+```
+skills/
+  my-skill/
+    SKILL.md          ← main skill file (required)
+    references/       ← supporting context files (optional)
+    evals/            ← test evals (optional)
+```
+
+The `SKILL.md` file contains a YAML frontmatter header (`name`, `description`) followed by the skill instructions in markdown.
+
+---
+
+## First-Time Setup (new machine)
 
 ### 1. Clone the repo
 
@@ -14,34 +30,25 @@ Skills are `.md` files in the `commands/` folder. Each file becomes a slash comm
 git clone git@github.com:abhargava6/claude.git ~/claude-skills
 ```
 
-### 2. Symlink to Claude Code (terminal)
+### 2. Create the symlink
 
 ```bash
-ln -s ~/claude-skills/commands ~/.claude/commands
+ln -s ~/claude-skills/skills ~/.claude/skills
 ```
 
-### 3. Symlink to Claude Desktop
+That's it — Claude Desktop and Claude Code both auto-discover skills from `~/.claude/skills/`.
 
-```bash
-ln -s ~/claude-skills/commands ~/Library/Application\ Support/Claude/commands
-```
-
-### 4. Claude.ai (web)
-
-Skills are not currently supported on Claude.ai web. They only work in Claude Desktop and Claude Code (terminal).
+---
 
 ## Adding a New Skill
 
-1. Create a new `.md` file in `commands/`:
+### Option A — Built in Claude Desktop
+
+1. Create and refine your skill in Claude Desktop as normal
+2. Copy it to the repo:
 
 ```bash
-nano ~/claude-skills/commands/my-skill.md
-```
-
-2. Write a plain English prompt describing what the skill should do:
-
-```markdown
-Do X by doing Y. Then check for Z and summarize the results.
+cp -r ~/Library/Application\ Support/Claude/local-agent-mode-sessions/skills-plugin/*/*/skills/my-skill ~/claude-skills/skills/
 ```
 
 3. Commit and push:
@@ -53,26 +60,66 @@ git commit -m "add my-skill"
 git push
 ```
 
-The skill is immediately available as `/my-skill` in Claude Desktop and Claude Code — no restart needed.
+### Option B — Built in Claude Code (terminal)
+
+1. Create a new skill folder:
+
+```bash
+mkdir -p ~/claude-skills/skills/my-skill
+```
+
+2. Create the `SKILL.md`:
+
+```bash
+nano ~/claude-skills/skills/my-skill/SKILL.md
+```
+
+Minimal format:
+
+```markdown
+---
+name: my-skill
+description: >
+  One sentence describing when Claude should trigger this skill.
+---
+
+# My Skill
+
+Instructions for what Claude should do when this skill is invoked.
+```
+
+3. Commit and push:
+
+```bash
+cd ~/claude-skills
+git add .
+git commit -m "add my-skill"
+git push
+```
+
+### Option C — Pull latest skills on another machine
+
+```bash
+cd ~/claude-skills && git pull
+```
+
+Skills are available immediately after pull — no restart needed.
+
+---
 
 ## Using a Skill
 
-In Claude Code (terminal) or Claude Desktop, just type:
+In Claude Desktop or Claude Code terminal, type:
 
 ```
 /my-skill
 ```
 
-## Syncing to a New Machine
-
-```bash
-git clone git@github.com:abhargava6/claude.git ~/claude-skills
-ln -s ~/claude-skills/commands ~/.claude/commands                                      # Claude Code
-ln -s ~/claude-skills/commands ~/Library/Application\ Support/Claude/commands         # Claude Desktop
-```
+---
 
 ## Available Skills
 
 | Skill | Description |
 |-------|-------------|
+| `/jira-ticket-writer` | Converts Slack messages or freeform text into Jira Bug, Story, or Task tickets |
 | `/review-pr` | Reviews git diff or PR for bugs, security issues, and code quality |
