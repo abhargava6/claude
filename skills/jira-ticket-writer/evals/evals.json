@@ -1,0 +1,53 @@
+{
+  "skill_name": "jira-ticket-writer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Turn this into a Jira ticket:\n\nhey has anyone seen the dashboard loading forever for people on the free plan?\nstarted getting reports this morning, might be the caching change we shipped tuesday\nnot sure how widespread it is but at least 3 people have mentioned it",
+      "expected_output": "A Bug ticket with a professional summary, steps to reproduce, expected/actual behavior, impact section, and a Missing section flagging information gaps.",
+      "files": [],
+      "expectations": [
+        "Issue type is identified as Bug",
+        "Summary is a clean, professional one-liner (not copied verbatim from the casual input)",
+        "Steps to reproduce are present and logical",
+        "Expected and actual behavior sections are both present",
+        "Impact section mentions at least 3 users and acknowledges unknown scope",
+        "A ⚠️ Missing section is present listing information gaps",
+        "Labels include core-intake",
+        "Priority is inferred with an explanation (not just stated without rationale)"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Turn this into a Jira ticket:\n\n*Type:* Bug\n*Summary:* Export to CSV broken for enterprise accounts\n*Reported by:* @sarah (on behalf of Customer Success)\n*Details:* Clicking \"Export to CSV\" on the Reports page just shows a spinner forever.\n  Started happening after yesterday's deploy. Our biggest enterprise customer flagged it.\n*Priority:* High\n*Team:* Data / Reports\n*Environment:* Production, enterprise accounts only",
+      "expected_output": "A Bug ticket that honors the explicitly provided fields (type, priority, team) while enriching the description with structured sections.",
+      "files": [],
+      "expectations": [
+        "Issue type is Bug (as explicitly stated in the input)",
+        "Priority is High (as explicitly stated, not overridden)",
+        "Component or team is Data / Reports",
+        "Summary is rewritten to be more specific than the raw input",
+        "Steps to reproduce are synthesized from the details",
+        "A ⚠️ Missing section is present",
+        "Labels include core-intake",
+        "Reporter is attributed to Sarah / Customer Success"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Turn this into a Jira ticket:\n\nwe should add dark mode, tons of users keep asking for it",
+      "expected_output": "A Story ticket using the 'As a user, I want..., So that...' format, with acceptance criteria and a Missing section.",
+      "files": [],
+      "expectations": [
+        "Issue type is identified as Story (feature request, not a bug or task)",
+        "Description uses the 'As a [user], I want [X], So that [Y]' format",
+        "Acceptance criteria are present with at least 2 testable items",
+        "Summary is a clean capability statement (not just 'add dark mode')",
+        "A ⚠️ Missing section is present (e.g. design mockups, scope, platforms)",
+        "Labels include core-intake",
+        "Priority is inferred with reasoning",
+        "Draft review prompt is shown at the end"
+      ]
+    }
+  ]
+}
