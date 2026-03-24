@@ -1,0 +1,93 @@
+{
+  "skill_name": "pptx-designer",
+  "version": "1.0",
+  "evals": [
+    {
+      "id": 1,
+      "name": "investor-pitch-deck",
+      "prompt": "Create a 10-slide investor pitch deck for a B2B SaaS company called Verity that helps legal teams automate contract review. We closed $2.1M seed round, have 18 enterprise customers, and 340% NRR. Audience is Series A investors. Make it look premium and professional.",
+      "expected_output": "A visually polished .pptx file with 10 slides, dark title/closing slides, professional color palette appropriate for investor audience, big stat callouts for the metrics, varied slide layouts (no two consecutive same type), consistent visual motif, all text readable, no placeholder content.",
+      "assertions": [
+        {
+          "text": "Slide count is exactly 10",
+          "type": "programmatic"
+        },
+        {
+          "text": "Key metrics (2.1M, 18, 340%) appear as large stat callouts, not buried in body text",
+          "type": "visual"
+        },
+        {
+          "text": "Color palette is appropriate for investor/executive audience (not coral or berry)",
+          "type": "visual"
+        },
+        {
+          "text": "Title slide uses dark background treatment",
+          "type": "visual"
+        },
+        {
+          "text": "No two consecutive slides use the same layout",
+          "type": "visual"
+        },
+        {
+          "text": "No placeholder text, lorem ipsum, or TODO markers",
+          "type": "programmatic"
+        }
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "team-update-presentation",
+      "prompt": "I need a presentation for my weekly team standup — 6 slides covering: last week's wins, blockers we hit, metrics (we hit 94% of sprint goals, shipped 3 features, 2 bugs fixed), what's planned this week, and a shoutout section. Keep it clean and energetic, not too corporate.",
+      "expected_output": "A 6-slide .pptx with a clean, modern feel. Metrics on their own callout slide. Varied layouts. Energetic but not loud color palette. Should feel like it was made by someone who cares about design, not a default template.",
+      "assertions": [
+        {
+          "text": "Slide count is 6",
+          "type": "programmatic"
+        },
+        {
+          "text": "Sprint metrics (94%, 3 features, 2 bugs) are visually prominent — not just bullets",
+          "type": "visual"
+        },
+        {
+          "text": "Shoutout section has a distinct/celebratory visual treatment",
+          "type": "visual"
+        },
+        {
+          "text": "No placeholder text",
+          "type": "programmatic"
+        }
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "name": "product-roadmap-deck",
+      "prompt": "Create a product roadmap presentation for our executive team. Q1 we're launching the new onboarding flow and fixing the mobile app crashes. Q2 is the API v2 release and enterprise SSO. Q3 is the AI recommendations feature. Q4 is TBD. About 8 slides. We're a fintech company so keep it clean and trustworthy looking.",
+      "expected_output": "An 8-slide .pptx with a professional fintech-appropriate palette (Teal Trust or Ocean Gradient), timeline/roadmap visualization slide, quarterly breakdown, clean layout. Should look like something you'd actually present to a CFO.",
+      "assertions": [
+        {
+          "text": "Slide count is approximately 8 (7-9 acceptable)",
+          "type": "programmatic"
+        },
+        {
+          "text": "Color palette uses fintech-appropriate colors (teal, blue, navy — not coral or cherry)",
+          "type": "visual"
+        },
+        {
+          "text": "Roadmap includes a timeline or quarter-by-quarter visual layout",
+          "type": "visual"
+        },
+        {
+          "text": "All four quarters (Q1-Q4) represented",
+          "type": "content"
+        },
+        {
+          "text": "No placeholder text",
+          "type": "programmatic"
+        }
+      ],
+      "files": []
+    }
+  ]
+}
