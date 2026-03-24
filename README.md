@@ -104,6 +104,43 @@ Skills are available immediately after pull — no restart needed.
 
 ---
 
+## Publishing a Skill to Claude Desktop
+
+Skills built in Claude Code (terminal) are available in Claude Code automatically via the symlink, but need to be packaged and installed to appear in Claude Desktop's slash command menu.
+
+Run the publish script:
+
+```bash
+~/claude-skills/publish-to-desktop.sh my-skill
+```
+
+This will:
+1. Package the skill as a `.skill` file using the skill-creator packager
+2. Open the `.skill` file — Claude Desktop will prompt you to install it
+3. The skill then appears in Desktop's `/` command menu
+
+**Note:** Evals (`evals/`) are excluded from the package by design — they're for development use with `/skill-creator`, not for end-user installation.
+
+To see all available skills you can publish:
+
+```bash
+~/claude-skills/publish-to-desktop.sh
+```
+
+---
+
+## Improving a Skill Over Time
+
+Skills with an `evals/evals.json` file can be benchmarked and improved using the `/skill-creator` skill:
+
+```
+/skill-creator improve the my-skill skill at ~/claude-skills/skills/my-skill
+```
+
+This runs the test cases, compares outputs with/without the skill, opens a browser review viewer, and helps you iterate. After improving, re-run the publish script to update the Desktop version.
+
+---
+
 ## Using a Skill
 
 In Claude Desktop or Claude Code terminal, type:
@@ -121,6 +158,7 @@ In Claude Desktop or Claude Code terminal, type:
 |-------|-------------|
 | `/jira-ticket-writer` | Converts Slack messages or freeform text into Jira Bug, Story, or Task tickets |
 | `/review-pr` | Reviews git diff or PR for bugs, security issues, and code quality |
+| `/pptx-designer` | Creates visually polished presentations as .pptx or Google Slides with professional design system |
 
 ### Built-in (Claude Desktop)
 | Skill | Description |
