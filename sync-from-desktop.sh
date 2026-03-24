@@ -15,23 +15,48 @@ find_desktop_skills() {
   find "$COWORK_BASE" -name "SKILL.md" -path "*/skills/*" ! -path "*/skills-plugin/*" 2>/dev/null
 }
 
+# Find .skill zip files in Desktop outputs
+find_skill_files() {
+  find "$COWORK_BASE" -name "*.skill" 2>/dev/null
+}
+
 copy_skill() {
   local skill_dir="$1"
   local skill_name
   skill_name=$(basename "$skill_dir")
 
   echo "→ Syncing: $skill_name"
+  rm -rf "${REPO:?}/$skill_name"
   cp -r "$skill_dir" "$REPO/$skill_name"
+}
+
+install_skill_file() {
+  local skill_file="$1"
+  local skill_name
+  skill_name=$(basename "$skill_file" .skill)
+
+  echo "→ Installing from .skill file: $skill_name"
+  rm -rf "${REPO:?}/$skill_name"
+  mkdir -p "$REPO/$skill_name"
+  unzip -q "$skill_file" -d "$REPO/$skill_name"
+
+  # Also copy evals folder if it exists next to the .skill file
+  local evals_dir
+  evals_dir="$(dirname "$skill_file")/${skill_name}-evals"
+  if [[ -d "$evals_dir" ]]; then
+    echo "  + copying evals"
+    cp -r "$evals_dir" "$REPO/$skill_name/evals"
+  fi
 }
 
 TARGET="$1"
 SYNCED=0
 
+# First pass: try extracted SKILL.md folders
 while IFS= read -r skill_md; do
   skill_dir=$(dirname "$skill_md")
   skill_name=$(basename "$skill_dir")
 
-  # If a specific skill was requested, skip others
   if [[ -n "$TARGET" && "$skill_name" != "$TARGET" ]]; then
     continue
   fi
@@ -39,6 +64,23 @@ while IFS= read -r skill_md; do
   copy_skill "$skill_dir"
   SYNCED=$((SYNCED + 1))
 done < <(find_desktop_skills)
+
+# Second pass: fallback to .skill zip files for anything not found above
+while IFS= read -r skill_file; do
+  skill_name=$(basename "$skill_file" .skill)
+
+  if [[ -n "$TARGET" && "$skill_name" != "$TARGET" ]]; then
+    continue
+  fi
+
+  # Skip if already synced via extracted folder
+  if [[ -f "$REPO/$skill_name/SKILL.md" ]]; then
+    continue
+  fi
+
+  install_skill_file "$skill_file"
+  SYNCED=$((SYNCED + 1))
+done < <(find_skill_files)
 
 if [[ $SYNCED -eq 0 ]]; then
   if [[ -n "$TARGET" ]]; then
