@@ -45,20 +45,17 @@ That's it — Claude Desktop and Claude Code both auto-discover skills from `~/.
 ### Option A — Built in Claude Desktop
 
 1. Create and refine your skill in Claude Desktop as normal
-2. Copy it to the repo:
+2. Run the sync script:
 
 ```bash
-cp -r ~/Library/Application\ Support/Claude/local-agent-mode-sessions/skills-plugin/*/*/skills/my-skill ~/claude-skills/skills/
+# Sync a specific skill
+~/claude-skills/sync-from-desktop.sh jira-ticket-writer
+
+# Sync all Desktop skills at once
+~/claude-skills/sync-from-desktop.sh
 ```
 
-3. Commit and push:
-
-```bash
-cd ~/claude-skills
-git add .
-git commit -m "add my-skill"
-git push
-```
+This automatically copies the skill from Desktop's cache, commits, and pushes to GitHub.
 
 ### Option B — Built in Claude Code (terminal)
 
