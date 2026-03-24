@@ -116,7 +116,31 @@ In Claude Desktop or Claude Code terminal, type:
 
 ## Available Skills
 
+### Custom
 | Skill | Description |
 |-------|-------------|
 | `/jira-ticket-writer` | Converts Slack messages or freeform text into Jira Bug, Story, or Task tickets |
 | `/review-pr` | Reviews git diff or PR for bugs, security issues, and code quality |
+
+### Built-in (Claude Desktop)
+| Skill | Description |
+|-------|-------------|
+| `/pdf` | Read, extract, and work with PDF files |
+| `/docx` | Create and edit Word documents |
+| `/pptx` | Create and edit PowerPoint presentations |
+| `/xlsx` | Create and edit Excel spreadsheets |
+| `/schedule` | Schedule and manage calendar events |
+| `/skill-creator` | Build and refine new Claude skills |
+
+### Plugins (Cowork)
+| Skill | Description |
+|-------|-------------|
+| `/roadmap-update` | Generate roadmap update summaries |
+| `/stakeholder-update` | Write stakeholder update communications |
+| `/sprint-planning` | Assist with sprint planning and ticket breakdown |
+| `/competitive-brief` | Create competitive analysis briefs |
+| `/write-spec` | Write product specs and requirements |
+| `/synthesize-research` | Synthesize research and user feedback |
+| `/metrics-review` | Review and summarize product metrics |
+| `/cowork-plugin-customizer` | Customize existing Cowork plugins |
+| `/create-cowork-plugin` | Create new Cowork plugins |
