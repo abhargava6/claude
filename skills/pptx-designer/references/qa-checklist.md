@@ -40,6 +40,9 @@ Look for:
 - Title slide doesn't match closing slide treatment
 - Accent lines under titles (remove these — they're an AI tell)
 - All-text slides with no visual element
+- Empty lower third — content should reach y≥4.8" on every slide
+- Gap between main content and bottom anchor (>1" empty space)
+- 4 items squeezed into 3-column spacing (uneven column widths)
 
 For each slide, list issues found, even minor ones.
 Number each issue. If you find none, look harder.
@@ -86,6 +89,9 @@ If grep returns results → fix before proceeding.
 - [ ] Two-column slides have aligned tops and bottoms
 - [ ] Icon grid items are evenly spaced and aligned
 - [ ] Stat callouts are horizontally centered
+- [ ] **Every slide has content reaching y≥4.8"** — no empty lower thirds
+- [ ] 4-item slides use proper 4-column spacing (2.15" columns, x: 0.5/2.85/5.2/7.55) — not 3-column spacing with items squeezed in
+- [ ] Bottom anchors (CTAs, taglines) don't create a visual gap above them — if there's >1" empty space between main content and the anchor, spread the main content down
 
 ### Motif
 - [ ] Visual motif applied consistently across all content slides
@@ -110,6 +116,9 @@ If grep returns results → fix before proceeding.
 | Low contrast | Use palette's text/background safe combinations |
 | Motif missing on slide | Add the motif shape/element to that slide |
 | Placeholder image | Replace with actual image or colored shape |
+| Empty lower third | Add bottom anchor (CTA, tagline, divider + sub-content) at y≈5.0" AND spread main content down with larger fonts/spacing |
+| 4 items in 3-column layout | Switch to 4-column template (2.15" cols at x: 0.5, 2.85, 5.2, 7.55) |
+| Gap between content and bottom anchor | Increase vertical spacing between main content items, increase font sizes, or add sub-labels to fill the gap |
 
 ---
 

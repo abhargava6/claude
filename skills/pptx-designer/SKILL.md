@@ -15,6 +15,7 @@ A skill for creating **visually compelling, professionally designed** presentati
 | Design system & principles | [references/design-system.md](references/design-system.md) |
 | Slide layout templates (pptxgenjs) | [references/slide-templates.md](references/slide-templates.md) |
 | Color palettes | [references/color-palettes.md](references/color-palettes.md) |
+| Industry matching & UX rules | [references/industry-ux-rules.md](references/industry-ux-rules.md) |
 | QA checklist | [references/qa-checklist.md](references/qa-checklist.md) |
 
 ---
@@ -44,10 +45,13 @@ If the user hasn't provided these, ask for audience and goal at minimum. The res
 Before generating, make conscious design decisions. Read [references/design-system.md](references/design-system.md) for the full system.
 
 **Always decide upfront:**
+- Industry/audience → style match (see [references/industry-ux-rules.md](references/industry-ux-rules.md) for reasoning rules)
 - Color palette (see [references/color-palettes.md](references/color-palettes.md))
 - Font pairing (heading + body)
 - Visual motif (one repeating element across all slides)
 - Dark vs light vs sandwich (dark title/end, light content)
+
+**Industry matching matters.** A healthcare report and a startup pitch need completely different palettes, fonts, and slide structures. Use the industry reasoning rules to make informed defaults instead of guessing.
 
 **Never start without a plan.** Default choices produce forgettable slides.
 
@@ -55,7 +59,7 @@ Before generating, make conscious design decisions. Read [references/design-syst
 
 ## Step 2 — Plan the Slide Structure
 
-Draft a slide-by-slide outline before building:
+Draft a slide-by-slide outline before building. Use industry-specific slide structures from [references/industry-ux-rules.md](references/industry-ux-rules.md) if the topic matches an industry pattern. Otherwise, use this default:
 
 ```
 1. Title slide — [topic + subtitle]
@@ -88,7 +92,7 @@ npm install -g pptxgenjs
 Follow the templates in [references/slide-templates.md](references/slide-templates.md) for each slide type. The templates include precise coordinates, font sizes, and color assignments.
 
 **Key rules while building:**
-- Set slide dimensions first: 10" × 5.63" (16:9 widescreen)
+- Set slide dimensions first: `pptx.layout = 'LAYOUT_16x9'` (10"×5.63"). NEVER use `LAYOUT_WIDE` — it is 13.33"×7.5" and leaves the right ~25% of every slide blank
 - Define master colors and fonts as constants at top of script
 - Every slide needs at least one non-text visual element
 - Left-align body text; center only titles and key stat callouts
@@ -112,7 +116,8 @@ Return the Google Slides URL from the response.
 
 **Assume there are visual problems. Your job is to find them.**
 
-Read [references/qa-checklist.md](references/qa-checklist.md) for the full checklist.
+Read [references/qa-checklist.md](references/qa-checklist.md) for the full visual inspection checklist.
+Read [references/industry-ux-rules.md](references/industry-ux-rules.md) § "Pre-Delivery Checklist" for the anti-pattern validation.
 
 Convert to images for visual inspection:
 ```bash
@@ -134,6 +139,7 @@ For Google Slides: Return the full URL so the user can open it directly.
 
 Always summarize:
 - Design choices made (palette, fonts, motif)
+- Industry reasoning applied (which rules guided the design)
 - Slide count and structure
 - Any assumptions about audience/tone
 
@@ -141,6 +147,11 @@ Always summarize:
 
 ## Common Mistakes to Avoid
 
+- **Wrong layout constant** — ALWAYS use `pptx.layout = 'LAYOUT_16x9'` (10"×5.63"). `LAYOUT_WIDE` is 13.33"×7.5" — content clusters in the left 75%, entire right side blank.
+- **Leaving the bottom third empty** — Content must reach y≥4.8" on every slide. If a slide looks half-empty after the main content, use one or more of these fixes: increase font sizes by 2-4pt, increase line spacing to 1.4-1.5, add a supporting tagline or CTA anchored at y≈5.05", add a subtle divider line, or add a row of supporting elements (client logos, badges, icons). The lower third of a slide should never sit blank — it signals unfinished work.
+- **Using a 3-column template for 4 items** — When you have 4 items (4 stats, 4 audience segments, 4 features), use proper 4-column spacing: 2.15" per column with 0.2" gutters (x positions: 0.5, 2.85, 5.2, 7.55). Never squeeze 4 items into 3-column coordinates — it creates cramped content on the left and wasted space on the right.
+- **Adding bottom anchors but leaving a gap above them** — A CTA or tagline at y=5.0 doesn't fix the problem if there's a 1.5" empty gap between the main content and the anchor. Spread the main content to fill the space: increase vertical spacing between items, increase font sizes, or add sub-labels beneath stat callouts.
+- **Ignoring industry context** — A healthcare deck should not look like a startup pitch. Use the industry reasoning rules to select appropriate palette, fonts, and structure.
 - Repeating the same layout on consecutive slides
 - Using bullet lists when icons + headers would be clearer
 - Defaulting to blue — pick colors that match the topic
@@ -148,6 +159,9 @@ Always summarize:
 - Text-only slides — every slide needs a visual element
 - Light text on light backgrounds or dark on dark
 - Centering body text (only center titles and single-line callouts)
+- **Emoji as icons** — renders inconsistently across PowerPoint versions and platforms. Use pptxgenjs shapes (OVAL, RECTANGLE with text) instead.
+- **Purple gradient backgrounds** — AI-slop signal. Use solid palette colors; gradient only sparingly on title slide.
+- **Dense paragraphs** — max 6 lines per text block. If the audience has to read a paragraph, you've lost them.
 
 ---
 

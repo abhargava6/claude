@@ -31,6 +31,10 @@
         {
           "text": "No placeholder text, lorem ipsum, or TODO markers",
           "type": "programmatic"
+        },
+        {
+          "text": "No slide has a large empty zone in the lower third — content fills the full slide height",
+          "type": "visual"
         }
       ],
       "files": []

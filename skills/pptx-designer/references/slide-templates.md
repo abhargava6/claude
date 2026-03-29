@@ -15,7 +15,7 @@ All templates assume:
 const pptxgen = require('pptxgenjs');
 const pptx = new pptxgen();
 
-pptx.layout = 'LAYOUT_WIDE'; // 10" x 5.63"
+pptx.layout = 'LAYOUT_16x9'; // 10" x 5.63" — NEVER use LAYOUT_WIDE (that is 13.33"x7.5" and leaves the right ~25% of every slide blank)
 
 // Define palette and fonts as constants
 const P = {
@@ -197,6 +197,61 @@ cols.forEach(col => {
 
 ---
 
+## Template 4b: Icon Grid (4 points)
+
+Use this when you have exactly 4 items. Do NOT squeeze 4 items into Template 4's 3-column layout.
+
+```javascript
+const slide = pptx.addSlide();
+slide.background = { color: P.background };
+
+slide.addText('Slide Title', {
+  x: 0.5, y: 0.3, w: 9.0, h: 0.6,
+  fontSize: 28, bold: true,
+  color: P.primary, fontFace: F.heading,
+});
+
+// 4-column layout: 2.15" per column, 0.2" gutter
+const cols = [
+  { x: 0.5,  icon: '⚡', header: 'Point One',   body: 'Description in two or three lines.' },
+  { x: 2.85, icon: '🎯', header: 'Point Two',   body: 'Description in two or three lines.' },
+  { x: 5.2,  icon: '📈', header: 'Point Three', body: 'Description in two or three lines.' },
+  { x: 7.55, icon: '🔒', header: 'Point Four',  body: 'Description in two or three lines.' },
+];
+
+cols.forEach(col => {
+  slide.addShape(pptx.shapes.OVAL, {
+    x: col.x + 0.55, y: 1.3, w: 0.85, h: 0.85,
+    fill: { color: P.primary }, line: { color: P.primary },
+  });
+  slide.addText(col.icon, {
+    x: col.x + 0.55, y: 1.3, w: 0.85, h: 0.85,
+    fontSize: 22, align: 'center', valign: 'middle',
+  });
+  slide.addText(col.header, {
+    x: col.x, y: 2.3, w: 2.15, h: 0.5,
+    fontSize: 16, bold: true,
+    color: P.primary, fontFace: F.heading, align: 'center',
+  });
+  // Body extends to y≈4.8 to fill slide
+  slide.addText(col.body, {
+    x: col.x, y: 2.9, w: 2.15, h: 1.9,
+    fontSize: 13, color: P.text,
+    fontFace: F.body, align: 'center', valign: 'top',
+    lineSpacingMultiple: 1.25,
+  });
+});
+
+// Bottom anchor — CTA or tagline at y≈5.05
+slide.addText('Bottom anchor text here — CTA, tagline, or link', {
+  x: 0.5, y: 5.05, w: 9.0, h: 0.35,
+  fontSize: 11, color: P.accent, bold: true,
+  fontFace: F.body, align: 'center',
+});
+```
+
+---
+
 ## Template 5: Big Stat Callout (3 stats)
 
 ```javascript
@@ -242,6 +297,63 @@ slide.addText('As of [date] — [source or caveat if needed]', {
   x: 0.5, y: 4.8, w: 9.0, h: 0.4,
   fontSize: 11, color: P.muted,
   fontFace: F.body, align: 'center',
+});
+```
+
+---
+
+## Template 5b: Big Stat Callout (4 stats)
+
+Use this when you have exactly 4 stats. Do NOT squeeze 4 stats into Template 5's 3-column layout.
+
+```javascript
+const slide = pptx.addSlide();
+slide.background = { color: P.background };
+
+slide.addText('Slide Title', {
+  x: 0.5, y: 0.3, w: 9.0, h: 0.6,
+  fontSize: 28, bold: true,
+  color: P.primary, fontFace: F.heading,
+});
+
+// 4-column layout: 2.15" per column, 0.2" gutter
+const stats = [
+  { x: 0.5,  value: '47%',  label: 'Year-over-year growth' },
+  { x: 2.85, value: '$2.4M', label: 'ARR as of Q4' },
+  { x: 5.2,  value: '340+', label: 'Markets worldwide' },
+  { x: 7.55, value: '12',   label: 'Enterprise customers' },
+];
+
+stats.forEach((stat, i) => {
+  slide.addText(stat.value, {
+    x: stat.x, y: 1.3, w: 2.15, h: 1.4,
+    fontSize: 48, bold: true,
+    color: P.accent, fontFace: F.heading, align: 'center',
+  });
+  slide.addText(stat.label, {
+    x: stat.x, y: 2.8, w: 2.15, h: 0.9,
+    fontSize: 13, color: P.muted,
+    fontFace: F.body, align: 'center', lineSpacingMultiple: 1.2,
+  });
+  if (i < 3) {
+    slide.addShape(pptx.shapes.RECTANGLE, {
+      x: stat.x + 2.25, y: 1.5, w: 0.03, h: 1.8,
+      fill: { color: 'E0E0E0' }, line: { color: 'E0E0E0' },
+    });
+  }
+});
+
+// Divider line to separate stats from bottom section
+slide.addShape(pptx.shapes.RECTANGLE, {
+  x: 0.5, y: 4.1, w: 9.0, h: 0.03,
+  fill: { color: 'E8E8E8' }, line: { color: 'E8E8E8' },
+});
+
+// Bottom anchor — trust statement or supporting content at y≈4.3+
+slide.addText('Supporting note, trust statement, or client logos here', {
+  x: 0.5, y: 4.3, w: 9.0, h: 0.5,
+  fontSize: 14, color: P.muted,
+  fontFace: F.body, align: 'center', italic: true,
 });
 ```
 
@@ -377,3 +489,5 @@ slide.addText('Supporting context or implication in one short sentence.', {
 4. **Charts** — replace `[Chart goes here]` boxes with actual `slide.addChart(pptx.charts.BAR, data, opts)`
 5. **Vary across slides** — never use the same template on consecutive slides
 6. **Keep motif consistent** — if you use the left border accent in Template 3, use it on all content slides
+7. **Match item count to template** — use Template 4b/5b for 4 items, Template 4/5 for 3 items. Never squeeze 4 items into a 3-column template.
+8. **Fill the slide vertically** — content must reach y≥4.8". If main content ends above y=4.0", add bottom anchors AND spread main content down.

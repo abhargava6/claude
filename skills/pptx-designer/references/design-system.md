@@ -12,6 +12,7 @@ A professional presentation design system. Read this before making any design de
 4. **Consistency** — Same fonts, same colors, same margins, same motif — across every slide. One deviation destroys the illusion of craft.
 5. **One message per slide** — If a slide can't be summarized in one sentence, split it.
 6. **Dominance** — One color dominates (60-70%), one supports (20-30%), one accents (<10%). Never equal weight.
+7. **Vertical Fill** — Content must reach y≥4.8" on every slide. The lower third of a slide should never sit blank. If main content ends above y=4.0", increase font sizes, line spacing, vertical gaps between items, or anchor a supporting element (CTA, tagline, divider + sub-content) at y≈5.0". A half-empty slide signals unfinished work.
 
 ---
 
@@ -66,6 +67,13 @@ A professional presentation design system. Read this before making any design de
 | 50/50 | 4.37" | 4.37" | Comparison, text + image |
 | 60/40 | 5.25" | 3.5" | Text-heavy content |
 | 40/60 | 3.5" | 5.25" | Image-led content |
+
+### Four-Column Layout
+Use when presenting 4 equal items (stats, audience segments, features, cities):
+- Column width: **2.15"** each
+- Gutter: **0.2"** between columns
+- X positions: **0.5, 2.85, 5.2, 7.55**
+- Never squeeze 4 items into 3-column spacing — it creates uneven gutters
 
 ---
 
