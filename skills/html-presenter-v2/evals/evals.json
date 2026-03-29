@@ -1,0 +1,50 @@
+{
+  "skill_name": "html-presenter-v2",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Create an HTML presentation about our Q4 2025 quarterly results. We grew revenue 47% YoY to $2.4M ARR, added 12 enterprise customers, and expanded to 3 new markets. The audience is our board of directors. Make it look premium and executive — think dark theme, big numbers, clean typography. About 8 slides.",
+      "expected_output": "A single .html file with 8 slides including: dark title slide, stats slide with counting animations, market expansion slide, customer growth slide, key takeaway, and closing CTA. Professional executive palette, distinctive fonts, keyboard navigation working, slide counter visible.",
+      "assertions": [
+        {"text": "Output is a single .html file with no external dependencies except Google Fonts", "type": "structural"},
+        {"text": "Contains at least 7 and at most 10 <section> elements with class 'slide'", "type": "structural"},
+        {"text": "Uses CSS custom properties on :root for colors and fonts", "type": "structural"},
+        {"text": "Includes keyboard navigation JavaScript (ArrowRight, ArrowLeft handlers)", "type": "functional"},
+        {"text": "Contains @media (prefers-reduced-motion) wrapper for animations", "type": "accessibility"},
+        {"text": "Slide counter element is present and updates", "type": "functional"},
+        {"text": "Stat values ($2.4M, 47%, 12) appear in the presentation", "type": "content"},
+        {"text": "Does not use Inter, Roboto, or Arial as primary font", "type": "design"},
+        {"text": "Dark slides use consistent dark background color from palette", "type": "design"}
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I need a pitch deck as an HTML presentation for my AI startup called NeuralFlow. We do real-time ML inference optimization — reducing latency by 10x and costs by 60%. Target audience is Series A investors. I want it to feel modern and techy but not cliché — no purple gradients please. Include slides for: problem, solution, market size ($47B by 2027), traction (200+ customers, $1.2M ARR), team, and ask ($15M Series A). Make it interactive with nice animations.",
+      "expected_output": "Single .html file pitch deck with ~10 slides. Modern tech aesthetic with distinctive palette (not purple gradients). Animated stat counters for $47B, 200+, $1.2M, $15M. Fragment animations for bullet points. Card grid for team. Smooth slide transitions. Keyboard nav + progress bar.",
+      "assertions": [
+        {"text": "Output is a single .html file", "type": "structural"},
+        {"text": "Contains slide for each requested topic: problem, solution, market, traction, team, ask", "type": "content"},
+        {"text": "Does not use purple gradient backgrounds", "type": "design"},
+        {"text": "Includes counter animation JavaScript for stat values", "type": "functional"},
+        {"text": "Has fragment elements that reveal on keypress", "type": "functional"},
+        {"text": "Progress bar element exists", "type": "structural"},
+        {"text": "Contains @import for Google Fonts", "type": "structural"},
+        {"text": "All slides have scroll-snap-align property", "type": "structural"}
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Make me a simple 5-slide HTML presentation about the benefits of remote work. Keep it clean and minimal — I just want something I can share as a link with my team. Light theme, nothing too fancy but should have smooth transitions between slides.",
+      "expected_output": "Clean, minimal 5-slide HTML file. Light palette, simple animations (fade/slide up), keyboard navigation, no overly complex effects. Professional but approachable. Easy to share as a file.",
+      "assertions": [
+        {"text": "Output is a single .html file", "type": "structural"},
+        {"text": "Contains exactly 5 <section> elements with class 'slide'", "type": "structural"},
+        {"text": "Uses a light color scheme (white or near-white backgrounds for content slides)", "type": "design"},
+        {"text": "Includes keyboard navigation", "type": "functional"},
+        {"text": "Has smooth transition CSS (scroll-behavior: smooth or transition properties)", "type": "design"},
+        {"text": "Does not include particle effects or complex background animations", "type": "design"},
+        {"text": "Contains @media print stylesheet", "type": "structural"}
+      ]
+    }
+  ]
+}
