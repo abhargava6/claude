@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI at Savoya — Leadership Offsite</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --color-primary: #065A82;
+      --color-secondary: #1C7293;
+      --color-accent: #02C39A;
+      --color-bg: #F7FBFF;
+      --color-bg-dark: #0D1B2A;
+      --color-text: #0D1B2A;
+      --color-text-light: #E0F2FE;
+      --color-text-muted: #64748B;
+      --color-surface: #EFF6FF;
+      --color-border: #DBEAFE;
+
+      --font-heading: 'Space Grotesk', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+
+      --text-hero: clamp(2.8rem, 5.5vw, 4.5rem);
+      --text-title: clamp(1.8rem, 3.5vw, 3rem);
+      --text-subtitle: clamp(1.2rem, 2vw, 1.7rem);
+      --text-body: clamp(0.95rem, 1.3vw, 1.2rem);
+      --text-small: clamp(0.8rem, 1vw, 0.95rem);
+      --text-caption: clamp(0.7rem, 0.85vw, 0.85rem);
+
+      --space-xs: 0.5rem;
+      --space-sm: 1rem;
+      --space-md: 2rem;
+      --space-lg: 3.5rem;
+      --space-xl: 6rem;
+      --slide-padding: 5vw 6vw;
+
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+      --duration-fast: 0.3s;
+      --duration-normal: 0.6s;
+      --duration-slow: 1s;
+      --stagger-delay: 0.1s;
+
+      --slide-max-width: 1200px;
+      --border-radius-sm: 8px;
+      --border-radius-md: 16px;
+      --border-radius-lg: 24px;
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      color: var(--color-text);
+      background: var(--color-bg);
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .slides-container {
+      width: 100vw;
+      height: 100vh;
+      overflow-y: auto;
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+    }
+
+    .slide {
+      width: 100vw;
+      height: 100vh;
+      min-height: 100vh;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: var(--slide-padding);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide-content {
+      max-width: var(--slide-max-width);
+      margin: 0 auto;
+      width: 100%;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* === UI Chrome === */
+    .progress-bar {
+      position: fixed; top: 0; left: 0; height: 3px;
+      background: var(--color-accent);
+      transition: width var(--duration-fast) var(--ease-out-expo);
+      z-index: 100;
+    }
+
+    .slide-counter {
+      position: fixed; bottom: 2rem; right: 2rem;
+      font-family: var(--font-body);
+      font-size: var(--text-caption);
+      color: var(--color-text-muted);
+      z-index: 100;
+      opacity: 0.7;
+      transition: color 0.3s;
+    }
+
+    .slide-counter.on-dark {
+      color: rgba(255,255,255,0.4);
+    }
+
+    /* === Fragment animations === */
+    .fragment {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity var(--duration-normal) var(--ease-out-expo),
+                  transform var(--duration-normal) var(--ease-out-expo);
+    }
+    .fragment.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .fragment:nth-child(2) { transition-delay: 0.1s; }
+    .fragment:nth-child(3) { transition-delay: 0.2s; }
+    .fragment:nth-child(4) { transition-delay: 0.3s; }
+    .fragment:nth-child(5) { transition-delay: 0.4s; }
+
+    /* === Entrance animations === */
+    @media (prefers-reduced-motion: no-preference) {
+      .slide.active .animate-in {
+        animation: slideUp var(--duration-normal) var(--ease-out-expo) both;
+      }
+      .slide.active .animate-in.d1 { animation-delay: 0.1s; }
+      .slide.active .animate-in.d2 { animation-delay: 0.2s; }
+      .slide.active .animate-in.d3 { animation-delay: 0.3s; }
+      .slide.active .animate-in.d4 { animation-delay: 0.4s; }
+      .slide.active .animate-in.d5 { animation-delay: 0.5s; }
+      .slide.active .animate-in.d6 { animation-delay: 0.6s; }
+      .slide.active .animate-in.d7 { animation-delay: 0.7s; }
+
+      .slide:not(.active) .animate-in {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes countPulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    /* === Shared Styles === */
+    .slide-light { background: var(--color-bg); color: var(--color-text); }
+    .slide-dark { background: var(--color-bg-dark); color: var(--color-text-light); }
+
+    .slide-title {
+      font-family: var(--font-heading);
+      font-size: var(--text-title);
+      font-weight: 700;
+      margin-bottom: var(--space-lg);
+      color: var(--color-primary);
+      position: relative;
+      display: inline-block;
+    }
+
+    /* Motif: gradient accent line under titles */
+    .slide-title::after {
+      content: '';
+      position: absolute;
+      bottom: -0.5rem;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--color-accent), var(--color-secondary));
+      border-radius: 2px;
+    }
+
+    /* ===================== */
+    /* SLIDE 1: TITLE HERO   */
+    /* ===================== */
+    .slide-hero { background: var(--color-bg-dark); color: var(--color-text-light); }
+
+    .hero-bg {
+      position: absolute; inset: 0; overflow: hidden; z-index: 0;
+    }
+    .hero-orb {
+      position: absolute;
+      border-radius: 50%;
+    }
+    .hero-orb-1 {
+      width: 55vw; height: 55vw;
+      top: -20vw; right: -18vw;
+      background: radial-gradient(circle, rgba(2,195,154,0.12) 0%, transparent 65%);
+    }
+    .hero-orb-2 {
+      width: 35vw; height: 35vw;
+      bottom: -12vw; left: -10vw;
+      background: radial-gradient(circle, rgba(6,90,130,0.15) 0%, transparent 65%);
+    }
+    .hero-orb-3 {
+      width: 20vw; height: 20vw;
+      top: 30%; left: 45%;
+      background: radial-gradient(circle, rgba(28,114,147,0.08) 0%, transparent 65%);
+    }
+
+    .hero-title {
+      font-family: var(--font-heading);
+      font-size: var(--text-hero);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: var(--space-md);
+      letter-spacing: -0.02em;
+    }
+
+    .hero-title .accent { color: var(--color-accent); }
+
+    .hero-subtitle {
+      font-size: var(--text-subtitle);
+      font-weight: 300;
+      opacity: 0.75;
+      margin-bottom: var(--space-xs);
+    }
+
+    .hero-meta {
+      font-size: var(--text-small);
+      opacity: 0.45;
+      margin-top: var(--space-sm);
+    }
+
+    .hero-line {
+      width: 80px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--color-accent), transparent);
+      margin: var(--space-md) auto 0;
+      border-radius: 2px;
+    }
+
+    /* ===================== */
+    /* SLIDE 2: AGENDA       */
+    /* ===================== */
+    .agenda-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-md);
+      margin-top: var(--space-md);
+    }
+
+    .agenda-card {
+      background: var(--color-surface);
+      border-radius: var(--border-radius-md);
+      padding: var(--space-md);
+      border-left: 4px solid var(--color-accent);
+      transition: transform var(--duration-fast) var(--ease-out-expo),
+                  box-shadow var(--duration-fast) var(--ease-out-expo);
+    }
+    .agenda-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.06);
+    }
+
+    .agenda-card-icon {
+      width: 48px; height: 48px;
+      border-radius: var(--border-radius-sm);
+      background: var(--color-primary);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: var(--space-sm);
+    }
+
+    .agenda-card-icon svg { width: 24px; height: 24px; }
+
+    .agenda-card h3 {
+      font-family: var(--font-heading);
+      font-size: var(--text-subtitle);
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: var(--space-xs);
+    }
+
+    .agenda-card p {
+      font-size: var(--text-body);
+      line-height: 1.6;
+      color: var(--color-text-muted);
+    }
+
+    /* ======================= */
+    /* SLIDE 3,8: SECTION DIV  */
+    /* ======================= */
+    .slide-section { background: var(--color-primary); color: var(--color-text-light); }
+
+    .section-number {
+      position: absolute;
+      top: 8%; right: 6%;
+      font-family: var(--font-heading);
+      font-size: clamp(6rem, 14vw, 12rem);
+      font-weight: 700;
+      opacity: 0.06;
+      line-height: 1;
+    }
+
+    .section-title {
+      font-family: var(--font-heading);
+      font-size: var(--text-title);
+      font-weight: 700;
+      margin-bottom: var(--space-sm);
+    }
+
+    .section-desc {
+      font-size: var(--text-body);
+      opacity: 0.7;
+      max-width: 55%;
+      line-height: 1.7;
+    }
+
+    .section-accent-line {
+      width: 60px;
+      height: 3px;
+      background: var(--color-accent);
+      border-radius: 2px;
+      margin-bottom: var(--space-md);
+    }
+
+    /* ===================== */
+    /* SLIDE 4: AI ENABLE    */
+    /* ===================== */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-lg);
+      align-items: start;
+    }
+
+    .auto-group {
+      background: var(--color-surface);
+      border-radius: var(--border-radius-md);
+      padding: var(--space-md);
+      margin-bottom: var(--space-sm);
+      border-left: 3px solid var(--color-accent);
+    }
+
+    .auto-group h3 {
+      font-family: var(--font-heading);
+      font-size: calc(var(--text-body) * 1.1);
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: var(--space-xs);
+    }
+
+    .auto-group ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .auto-group li {
+      font-size: var(--text-body);
+      color: var(--color-text-muted);
+      padding: 0.3rem 0;
+      padding-left: 1.2rem;
+      position: relative;
+      line-height: 1.5;
+    }
+
+    .auto-group li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.7rem;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--color-accent);
+    }
+
+    /* ===================== */
+    /* SLIDE 5: MARKETING    */
+    /* ===================== */
+    .mktg-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-md);
+    }
+
+    .mktg-card {
+      background: var(--color-surface);
+      border-radius: var(--border-radius-md);
+      padding: var(--space-md);
+      transition: transform var(--duration-fast) var(--ease-out-expo),
+                  box-shadow var(--duration-fast) var(--ease-out-expo);
+    }
+    .mktg-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+    }
+
+    .mktg-card.featured {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: var(--space-md);
+      align-items: center;
+      border: 2px solid var(--color-accent);
+    }
+
+    .mktg-card h3 {
+      font-family: var(--font-heading);
+      font-size: calc(var(--text-body) * 1.1);
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: var(--space-xs);
+    }
+
+    .mktg-card p {
+      font-size: var(--text-body);
+      color: var(--color-text-muted);
+      line-height: 1.6;
+    }
+
+    .mktg-stats {
+      display: flex;
+      gap: var(--space-md);
+    }
+
+    .mktg-stat {
+      text-align: center;
+    }
+
+    .mktg-stat-val {
+      font-family: var(--font-heading);
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      font-weight: 700;
+      color: var(--color-accent);
+      display: block;
+    }
+
+    .mktg-stat-label {
+      font-size: var(--text-caption);
+      color: var(--color-text-muted);
+    }
+
+    /* ===================== */
+    /* SLIDE 6: PRODUCT      */
+    /* ===================== */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-md);
+    }
+
+    .product-card {
+      background: var(--color-surface);
+      border-radius: var(--border-radius-md);
+      padding: var(--space-md);
+      position: relative;
+      transition: transform var(--duration-fast) var(--ease-out-expo),
+                  box-shadow var(--duration-fast) var(--ease-out-expo);
+    }
+    .product-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+    }
+
+    .product-card h3 {
+      font-family: var(--font-heading);
+      font-size: calc(var(--text-body) * 1.1);
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: var(--space-xs);
+    }
+
+    .product-card p {
+      font-size: var(--text-body);
+      color: var(--color-text-muted);
+      line-height: 1.6;
+    }
+
+    .product-badge {
+      display: inline-block;
+      background: var(--color-accent);
+      color: var(--color-bg-dark);
+      padding: 0.2rem 0.7rem;
+      border-radius: 999px;
+      font-size: var(--text-caption);
+      font-weight: 600;
+      margin-top: var(--space-xs);
+    }
+
+    .product-value {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      color: var(--color-accent);
+      font-size: var(--text-subtitle);
+      margin-top: var(--space-xs);
+      display: block;
+    }
+
+    /* ===================== */
+    /* SLIDE 7: STATS        */
+    /* ===================== */
+    .stat-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: var(--space-lg);
+      margin-top: var(--space-lg);
+    }
+
+    .stat { text-align: center; flex: 1; }
+
+    .stat-value {
+      display: block;
+      font-family: var(--font-heading);
+      font-size: var(--text-hero);
+      font-weight: 700;
+      color: var(--color-accent);
+      line-height: 1;
+      margin-bottom: var(--space-xs);
+    }
+
+    .stat-label {
+      display: block;
+      font-size: var(--text-small);
+      color: var(--color-text-muted);
+      line-height: 1.4;
+    }
+
+    .stat-divider {
+      width: 1px;
+      height: 4rem;
+      background: var(--color-border);
+      flex-shrink: 0;
+    }
+
+    .stat-footnote {
+      text-align: center;
+      font-size: var(--text-caption);
+      color: var(--color-text-muted);
+      margin-top: var(--space-lg);
+    }
+
+    /* =========================== */
+    /* SLIDE 9: ENABLEMENT ROADMAP */
+    /* =========================== */
+    .roadmap-cols {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-md);
+    }
+
+    .roadmap-col {
+      background: var(--color-surface);
+      border-radius: var(--border-radius-md);
+      padding: var(--space-md);
+      border-top: 4px solid var(--color-accent);
+      transition: transform var(--duration-fast) var(--ease-out-expo),
+                  box-shadow var(--duration-fast) var(--ease-out-expo);
+    }
+    .roadmap-col:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+    }
+
+    .roadmap-col h3 {
+      font-family: var(--font-heading);
+      font-size: var(--text-subtitle);
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: var(--space-sm);
+    }
+
+    .roadmap-col ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .roadmap-col li {
+      font-size: var(--text-body);
+      color: var(--color-text-muted);
+      padding: 0.4rem 0;
+      padding-left: 1.2rem;
+      position: relative;
+      line-height: 1.5;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .roadmap-col li:last-child { border-bottom: none; }
+
+    .roadmap-col li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.75rem;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--color-secondary);
+    }
+
+    /* ============================ */
+    /* SLIDE 10: MARKETING FUTURE   */
+    /* ============================ */
+    .future-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-sm);
+    }
+
+    .future-item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: var(--space-sm);
+      align-items: start;
+      background: var(--color-surface);
+      border-radius: var(--border-radius-md);
+      padding: var(--space-md);
+      transition: transform var(--duration-fast) var(--ease-out-expo);
+    }
+    .future-item:hover { transform: translateX(6px); }
+
+    .future-num {
+      width: 40px; height: 40px;
+      background: var(--color-primary);
+      color: var(--color-text-light);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: var(--text-body);
+      flex-shrink: 0;
+    }
+
+    .future-item h3 {
+      font-family: var(--font-heading);
+      font-size: calc(var(--text-body) * 1.1);
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: 0.2rem;
+    }
+
+    .future-item p {
+      font-size: var(--text-body);
+      color: var(--color-text-muted);
+      line-height: 1.6;
+    }
+
+    /* ============================ */
+    /* SLIDE 11: PRODUCT VISION     */
+    /* ============================ */
+    .vision-timeline {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-md);
+      position: relative;
+    }
+
+    .vision-timeline::before {
+      content: '';
+      position: absolute;
+      top: 28px;
+      left: 60px;
+      right: 60px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--color-accent), var(--color-secondary), var(--color-primary));
+      z-index: 0;
+    }
+
+    .vision-item {
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .vision-marker {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: var(--color-bg);
+      border: 3px solid var(--color-accent);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto var(--space-sm);
+      position: relative;
+      z-index: 2;
+    }
+    .vision-marker svg { width: 24px; height: 24px; }
+
+    .vision-marker.now { background: var(--color-accent); border-color: var(--color-accent); }
+    .vision-marker.now svg path { stroke: var(--color-bg-dark); }
+
+    .vision-phase {
+      font-family: var(--font-heading);
+      font-size: var(--text-caption);
+      font-weight: 700;
+      color: var(--color-accent);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: var(--space-xs);
+    }
+
+    .vision-items {
+      background: var(--color-surface);
+      border-radius: var(--border-radius-md);
+      padding: var(--space-sm) var(--space-md);
+      text-align: left;
+    }
+
+    .vision-items li {
+      font-size: var(--text-small);
+      color: var(--color-text-muted);
+      padding: 0.35rem 0;
+      border-bottom: 1px solid var(--color-border);
+      line-height: 1.5;
+      list-style: none;
+    }
+    .vision-items li:last-child { border-bottom: none; }
+
+    /* ============================ */
+    /* SLIDE 12: KEY TAKEAWAY       */
+    /* ============================ */
+    .slide-takeaway { background: var(--color-bg-dark); color: var(--color-text-light); }
+
+    .takeaway-shape {
+      position: absolute;
+      width: 50vw; height: 50vw;
+      border-radius: 50%;
+      background: rgba(2,195,154,0.04);
+      right: -15vw; top: -10vw;
+    }
+    .takeaway-shape-2 {
+      position: absolute;
+      width: 30vw; height: 30vw;
+      border-radius: 50%;
+      background: rgba(6,90,130,0.06);
+      left: -10vw; bottom: -8vw;
+    }
+
+    .takeaway-label {
+      font-size: var(--text-small);
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--color-accent);
+      margin-bottom: var(--space-md);
+    }
+
+    .takeaway-message {
+      font-family: var(--font-heading);
+      font-size: var(--text-title);
+      font-weight: 700;
+      line-height: 1.3;
+      max-width: 80%;
+      margin: 0 auto var(--space-md);
+    }
+
+    .takeaway-support {
+      font-size: var(--text-body);
+      opacity: 0.6;
+      max-width: 60%;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* ============================ */
+    /* SLIDE 13: CLOSING            */
+    /* ============================ */
+    .closing-title {
+      font-family: var(--font-heading);
+      font-size: var(--text-title);
+      font-weight: 700;
+      margin-bottom: var(--space-sm);
+    }
+
+    .closing-sub {
+      font-size: var(--text-subtitle);
+      font-weight: 300;
+      opacity: 0.7;
+      margin-bottom: var(--space-lg);
+    }
+
+    .closing-line {
+      width: 80px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--color-accent), transparent);
+      margin: 0 auto var(--space-md);
+      border-radius: 2px;
+    }
+
+    .closing-name {
+      font-family: var(--font-heading);
+      font-size: var(--text-subtitle);
+      font-weight: 700;
+      color: var(--color-accent);
+    }
+
+    .closing-role {
+      font-size: var(--text-small);
+      opacity: 0.5;
+      margin-top: 0.3rem;
+    }
+
+    /* ============================ */
+    /* RESPONSIVE                   */
+    /* ============================ */
+    @media (max-width: 1024px) {
+      :root { --slide-padding: 4vw 5vw; }
+    }
+
+    @media (max-width: 768px) {
+      :root { --slide-padding: 6vw 5vw; }
+      .two-col, .agenda-grid, .mktg-grid, .product-grid, .roadmap-cols, .vision-timeline {
+        grid-template-columns: 1fr !important;
+      }
+      .mktg-card.featured { grid-template-columns: 1fr; }
+      .stat-row { flex-direction: column; gap: var(--space-md); }
+      .stat-divider { width: 4rem; height: 1px; }
+      .section-desc { max-width: 90%; }
+      .vision-timeline::before { display: none; }
+    }
+
+    /* ============================ */
+    /* PRINT                        */
+    /* ============================ */
+    @media print {
+      .slides-container { overflow: visible; scroll-snap-type: none; }
+      .slide { page-break-after: always; height: auto; min-height: 100vh; }
+      .slide-counter, .progress-bar { display: none; }
+      * { animation: none !important; transition: none !important; }
+    }
+
+    /* ============================ */
+    /* FOCUS                        */
+    /* ============================ */
+    :focus-visible {
+      outline: 3px solid var(--color-accent);
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="progress-bar" style="width: 0%"></div>
+  <div class="slide-counter">1 / 13</div>
+
+  <div class="slides-container">
+
+    <!-- ===== SLIDE 1: TITLE ===== -->
+    <section class="slide slide-hero" id="slide-1" role="region" aria-label="Title slide">
+      <div class="hero-bg">
+        <div class="hero-orb hero-orb-1"></div>
+        <div class="hero-orb hero-orb-2"></div>
+        <div class="hero-orb hero-orb-3"></div>
+      </div>
+      <div class="slide-content" style="text-align: center;">
+        <h1 class="hero-title animate-in">AI at <span class="accent">Savoya</span></h1>
+        <p class="hero-subtitle animate-in d1">What Product &amp; Marketing Have Built &mdash; and What&rsquo;s Next</p>
+        <div class="hero-line animate-in d2"></div>
+        <p class="hero-meta animate-in d3">Presented by Mark &middot; Product &amp; Marketing Leadership</p>
+        <p class="hero-meta animate-in d3">Leadership Offsite 2026</p>
+      </div>
+    </section>
+
+    <!-- ===== SLIDE 2: AGENDA ===== -->
+    <section class="slide slide-light" id="slide-2" role="region" aria-label="Agenda">
+      <div class="slide-content">
+        <h2 class="slide-title animate-in">What We&rsquo;ll Cover</h2>
+        <div class="agenda-grid">
+          <div class="agenda-card animate-in d2">
+            <div class="agenda-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#E0F2FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/></svg>
+            </div>
+            <h3>AI Enablement</h3>
+            <p>Chris&rsquo;s team: automations across Twilio, CRM, and data analysis driving operational efficiency.</p>
+          </div>
+          <div class="agenda-card animate-in d3">
+            <div class="agenda-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#E0F2FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            </div>
+            <h3>Marketing</h3>
+            <p>SEO pipeline, Savyy AI assistant, and content tools saving 100+ hours of manual work.</p>
+          </div>
+          <div class="agenda-card animate-in d4">
+            <div class="agenda-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#E0F2FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </div>
+            <h3>Product</h3>
+            <p>AI-written production code, vendor scoring, workflow automation &mdash; saving months of engineering time.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SLIDE 3: SECTION DIVIDER ===== -->
+    <section class="slide slide-section" id="slide-3" role="region" aria-label="Section: What We've Built">
+      <div class="section-number">01</div>
+      <div class="slide-content">
+        <div class="section-accent-line animate-in"></div>
+        <h2 class="section-title animate-in d1">What We&rsquo;ve Built</h2>
+        <p class="section-desc animate-in d2">A look at AI initiatives already completed and in active use across AI Enablement, Marketing, and Product.</p>
+      </div>
+    </section>
+
+    <!-- ===== SLIDE 4: AI ENABLEMENT (CHRIS) ===== -->
+    <section class="slide slide-light" id="slide-4" role="region" aria-label="AI Enablement achievements">
+      <div class="slide-content">
+        <h2 class="slide-title animate-in">AI Enablement &mdash; Chris</h2>
+        <div class="two-col">
+          <div>
+            <div class="auto-group animate-in d2">
+              <h3>Twilio Call Recording Analysis</h3>
+              <ul>
+                <li>Inbound call transcription via AI</li>
+                <li>Automated disposition classification</li>
+                <li>Suggestions on disposition volume trends</li>
+              </ul>
+            </div>
+            <div class="auto-group animate-in d3">
+              <h3>Cursor &mdash; Data Analysis</h3>
+              <ul>
+                <li>AI-powered data exploration and insights</li>
+              </ul>
+            </div>
+          </div>
+          <div>
+            <div class="auto-group animate-in d4">
+              <h3>CRM Automations</h3>
+              <ul>
+                <li>Groups &amp; Events automated updates</li>
+                <li>CSM data import from Cluvio</li>
+                <li>Trip and revenue trend analysis</li>
+              </ul>
+            </div>
+            <div style="background: linear-gradient(135deg, rgba(2,195,154,0.08), rgba(6,90,130,0.06)); border-radius: var(--border-radius-md); padding: var(--space-md); margin-top: var(--space-sm);" class="animate-in d5">
+              <p style="font-size: var(--text-small); color: var(--color-primary); font-weight: 600; font-family: var(--font-heading);">Impact</p>
+              <p style="font-size: var(--text-body); color: var(--color-text-muted); line-height: 1.6;">Reduced manual processing, faster disposition insights, and real-time CRM sync across teams.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SLIDE 5: MARKETING WINS ===== -->
+    <section class="slide slide-light" id="slide-5" role="region" aria-label="Marketing AI wins">
+      <div class="slide-content">
+        <h2 class="slide-title animate-in">Marketing AI Wins</h2>
+        <div class="mktg-grid">
+          <div class="mktg-card featured animate-in d2">
+            <div>
+              <h3>SEMrush + Webflow MCP Pipeline</h3>
+              <p>Automated SEO improvements: site health, AI search health, internal linking, and error reduction that boosted our SEO score.</p>
+            </div>
+            <div class="mktg-stats">
+              <div class="mktg-stat">
+                <span class="mktg-stat-val counter" data-target="2700" data-suffix="+">0+</span>
+                <span class="mktg-stat-label">Tasks Completed</span>
+              </div>
+              <div class="mktg-stat">
+                <span class="mktg-stat-val counter" data-target="100" data-suffix="+">0+</span>
+                <span class="mktg-stat-label">Hours Saved</span>
+              </div>
+            </div>
+          </div>
+          <div class="mktg-card animate-in d3">
+            <h3>Savyy AI</h3>
+            <p>Custom AI assistant built around Savoya&rsquo;s brand and structure. Pulls real-time data from multiple platforms and suggests strategy in context.</p>
+          </div>
+          <div class="mktg-card animate-in d4">
+            <h3>Replit &amp; AI Content Tools</h3>
+            <p>Landing page wireframe designs via Replit. Gemini and Midjourney used for content creation across campaigns.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SLIDE 6: PRODUCT WINS ===== -->
+    <section class="slide slide-light" id="slide-6" role="region" aria-label="Product AI wins">
+      <div class="slide-content">
+        <h2 class="slide-title animate-in">Product AI Wins &mdash; Ayush</h2>
+        <div class="product-grid">
+          <div class="product-card animate-in d2">
+            <h3>Client App Acceleration</h3>
+            <p>20&ndash;25% of code (~10,000 lines) written by Product using AI. Implemented Phase 2 features ahead of schedule. Would have taken engineering 3+ more months.</p>
+            <span class="product-value">~$30K saved</span>
+          </div>
+          <div class="product-card animate-in d3">
+            <h3>Vendor Scoring Phase 1</h3>
+            <p>100% of code written by Product using AI. Zero defects found in engineering review. Shipping in 2 weeks. Saves 2 months of engineering time.</p>
+            <span class="product-value">~$120K value</span>
+          </div>
+          <div class="product-card animate-in d4">
+            <h3>E2E Workflow Automation</h3>
+            <p>~90% complete. Full PM workflow automation package (~5,000 lines). Similar packages being developed by Cursor and Claude with paid demand.</p>
+            <span class="product-badge">Market Potential</span>
+          </div>
+          <div class="product-card animate-in d5">
+            <h3>Custom MCP Servers &amp; Design</h3>
+            <p>MCP servers for Jira, Confluence, Slack, Google Sheets &mdash; each worth $20&ndash;30 per license. Replit used for design alignment (Madeline).</p>
+            <span class="product-badge">Sellable Assets</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SLIDE 7: BY THE NUMBERS ===== -->
+    <section class="slide slide-light" id="slide-7" role="region" aria-label="Key metrics">
+      <div class="slide-content">
+        <h2 class="slide-title animate-in" style="text-align: center; display: block;">By the Numbers</h2>
+        <div class="stat-row">
+          <div class="stat animate-in d2">
+            <span class="stat-value counter" data-target="150" data-prefix="$" data-suffix="K+">$0K+</span>
+            <span class="stat-label">Value Created &amp; Saved</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat animate-in d3">
+            <span class="stat-value counter" data-target="15" data-suffix="K+">0K+</span>
+            <span class="stat-label">Lines of AI-Written Code</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat animate-in d4">
+            <span class="stat-value counter" data-target="2700" data-suffix="+">0+</span>
+            <span class="stat-label">Automated Tasks (Marketing)</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat animate-in d5">
+            <span class="stat-value counter" data-target="100" data-suffix="+">0+</span>
+            <span class="stat-label">Hours Saved</span>
+          </div>
+        </div>
+        <p class="stat-footnote animate-in d6">Dollar value bounded only by our imagination. These numbers represent direct, measurable impact.</p>
+      </div>
+    </section>
+
+    <!-- ===== SLIDE 8: SECTION DIVIDER ===== -->
+    <section class="slide slide-section" id="slide-8" role="region" aria-label="Section: What's Next">
+      <div class="section-number">02</div>
+      <div class="slide-content">
+        <div class="section-accent-line animate-in"></div>
+        <h2 class="section-title animate-in d1">What&rsquo;s Next</h2>
+        <p class="section-desc animate-in d2">In-progress and future initiatives that will deepen AI integration across every department.</p>
+      </div>
+    </section>
+
+    <!-- ===== SLIDE 9: AI ENABLEMENT ROADMAP ===== -->
+    <section class="slide slide-light" id="slide-9" role="region" aria-label="AI Enablement roadmap">
+      <div class="slide-content">
+        <h2 class="slide-title animate-in">AI Enablement Roadmap</h2>
+        <div class="roadmap-cols">
+          <div class="roadmap-col animate-in d2">
+            <h3>Dan &mdash; Vendor Ops</h3>
+            <ul>
+              <li>Automate vendor vetting processes</li>
+              <li>Improve vendor scoring automation</li>
+              <li>AI-driven vendor onboarding</li>
+              <li>Optimize vendor callflow for team efficiency</li>
+            </ul>
+          </div>
+          <div class="roadmap-col animate-in d3">
+            <h3>Todd &mdash; CSM &amp; Analytics</h3>
+            <ul>
+              <li>Dashboard automation with Metabase (travel bank, transfers, declining activity, revenue)</li>
+              <li>Churn scoring model</li>
+              <li>HubSpot automations for CSM notifications</li>
+            </ul>
+          </div>
+          <div class="roadmap-col animate-in d4">
+            <h3>David &mdash; Forecasting</h3>
+            <ul>
+              <li>Monthly projections: trips, revenue, stages vs. goal</li>
+              <li>Yearly per-account forecasts &amp; falloff predictions</li>
+              <li>Activity-based customer communication</li>
+              <li>Automated sales reporting for management</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SLIDE 10: MARKETING FUTURE ===== -->
+    <section class="slide slide-light" id="slide-10" role="region" aria-label="Marketing future initiatives">
+      <div class="slide-content">
+        <h2 class="slide-title animate-in">Marketing &mdash; What&rsquo;s Next</h2>
+        <div class="future-list">
+          <div class="future-item animate-in d2">
+            <div class="future-num">1</div>
+            <div>
+              <h3>Automated SEO Landing Pages</h3>
+              <p>AI-generated landing pages for targeted keywords (e.g., &ldquo;airport transfer Dallas&rdquo;) to scale organic traffic.</p>
+            </div>
+          </div>
+          <div class="future-item animate-in d3">
+            <div class="future-num">2</div>
+            <div>
+              <h3>AI-Driven Content Strategy</h3>
+              <p>Content ideas and strategy powered by Claude and Savyy recommendations based on real-time performance data.</p>
+            </div>
+          </div>
+          <div class="future-item animate-in d4">
+            <div class="future-num">3</div>
+            <div>
+              <h3>In-House Rewards &amp; Referral Programs</h3>
+              <p>Bringing Rewards and Referral programs in house, eliminating third-party costs and saving thousands per year.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SLIDE 11: PRODUCT VISION ===== -->
+    <section class="slide slide-light" id="slide-11" role="region" aria-label="Product vision">
+      <div class="slide-content">
+        <h2 class="slide-title animate-in">Product &amp; Engineering Vision &mdash; Ayush</h2>
+        <div class="vision-timeline">
+          <div class="vision-item animate-in d2">
+            <div class="vision-marker now">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#0D1B2A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="vision-phase">In Progress</div>
+            <ul class="vision-items">
+              <li>AI-native dev: AI writes code, engineers do architecture &amp; review</li>
+              <li>Product creates prototypes, engineering makes production-ready</li>
+              <li>Agent/skill development for every department task</li>
+            </ul>
+          </div>
+          <div class="vision-item animate-in d4">
+            <div class="vision-marker">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#065A82" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div class="vision-phase">Near Future</div>
+            <ul class="vision-items">
+              <li>AI-led QA: AI identifies regression gaps for manual testing</li>
+              <li>Team of Agents on isolated Mac Minis</li>
+              <li>Convey equivalent built in Claude</li>
+            </ul>
+          </div>
+          <div class="vision-item animate-in d6">
+            <div class="vision-marker">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#065A82" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            </div>
+            <div class="vision-phase">The Vision</div>
+            <ul class="vision-items">
+              <li>&ldquo;Ask Grok&rdquo; equivalent for Savoya in Slack</li>
+              <li>Product &amp; engineering agents working together autonomously</li>
+              <li>Every repetitive task replaced by an agent or skill</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SLIDE 12: KEY TAKEAWAY ===== -->
+    <section class="slide slide-takeaway" id="slide-12" role="region" aria-label="Key takeaway">
+      <div class="takeaway-shape"></div>
+      <div class="takeaway-shape-2"></div>
+      <div class="slide-content" style="text-align: center;">
+        <p class="takeaway-label animate-in">Key Takeaway</p>
+        <h2 class="takeaway-message animate-in d1">AI isn&rsquo;t just a tool we use. It&rsquo;s becoming how we build, sell, and operate.</h2>
+        <p class="takeaway-support animate-in d2">Every department is moving from experimenting with AI to embedding it into their core workflows &mdash; and the ROI is already measurable.</p>
+      </div>
+    </section>
+
+    <!-- ===== SLIDE 13: CLOSING ===== -->
+    <section class="slide slide-hero" id="slide-13" role="region" aria-label="Closing">
+      <div class="hero-bg">
+        <div class="hero-orb hero-orb-1"></div>
+        <div class="hero-orb hero-orb-2"></div>
+      </div>
+      <div class="slide-content" style="text-align: center;">
+        <h2 class="closing-title animate-in">Thank You</h2>
+        <p class="closing-sub animate-in d1">Questions &amp; Discussion</p>
+        <div class="closing-line animate-in d2"></div>
+        <p class="closing-name animate-in d3">Mark</p>
+        <p class="closing-role animate-in d3">Product &amp; Marketing Leadership</p>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    (function() {
+      const slides = document.querySelectorAll('.slide');
+      const counter = document.querySelector('.slide-counter');
+      const progressBar = document.querySelector('.progress-bar');
+      const totalSlides = slides.length;
+      let current = 0;
+
+      function animateCounter(element, target, duration) {
+        duration = duration || 1800;
+        var start = 0;
+        var startTime = performance.now();
+        var prefix = element.dataset.prefix || '';
+        var suffix = element.dataset.suffix || '';
+        var decimals = parseInt(element.dataset.decimals || '0');
+
+        function update(currentTime) {
+          var elapsed = currentTime - startTime;
+          var progress = Math.min(elapsed / duration, 1);
+          var eased = 1 - Math.pow(1 - progress, 4);
+          var val = start + (target - start) * eased;
+          element.textContent = prefix + val.toFixed(decimals) + suffix;
+          if (progress < 1) requestAnimationFrame(update);
+        }
+        requestAnimationFrame(update);
+      }
+
+      function activateSlide(index) {
+        slides.forEach(function(s, i) {
+          s.classList.toggle('active', i === index);
+        });
+
+        // Counter color
+        var isDark = slides[index].classList.contains('slide-hero') ||
+                     slides[index].classList.contains('slide-dark') ||
+                     slides[index].classList.contains('slide-section') ||
+                     slides[index].classList.contains('slide-takeaway');
+        counter.classList.toggle('on-dark', isDark);
+
+        // Stat counters
+        slides[index].querySelectorAll('.counter').forEach(function(el) {
+          var target = parseFloat(el.dataset.target);
+          if (!isNaN(target)) animateCounter(el, target);
+        });
+      }
+
+      function goToSlide(index) {
+        if (index < 0 || index >= totalSlides) return;
+        current = index;
+        slides[current].scrollIntoView({ behavior: 'smooth' });
+        updateUI();
+        activateSlide(current);
+      }
+
+      function updateUI() {
+        if (counter) counter.textContent = (current + 1) + ' / ' + totalSlides;
+        if (progressBar) progressBar.style.width = (((current + 1) / totalSlides) * 100) + '%';
+      }
+
+      // Keyboard navigation
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+          e.preventDefault();
+          goToSlide(current + 1);
+        }
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          goToSlide(current - 1);
+        }
+        if (e.key === 'Home') { e.preventDefault(); goToSlide(0); }
+        if (e.key === 'End') { e.preventDefault(); goToSlide(totalSlides - 1); }
+      });
+
+      // Scroll-snap sync
+      var container = document.querySelector('.slides-container');
+      var scrollTimeout;
+      container.addEventListener('scroll', function() {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(function() {
+          var scrollTop = container.scrollTop;
+          var slideHeight = window.innerHeight;
+          var newIndex = Math.round(scrollTop / slideHeight);
+          if (newIndex !== current && newIndex >= 0 && newIndex < totalSlides) {
+            current = newIndex;
+            updateUI();
+            activateSlide(current);
+          }
+        }, 100);
+      });
+
+      // Touch support
+      var touchStartY = 0;
+      document.addEventListener('touchstart', function(e) { touchStartY = e.touches[0].clientY; });
+      document.addEventListener('touchend', function(e) {
+        var diff = touchStartY - e.changedTouches[0].clientY;
+        if (Math.abs(diff) > 50) {
+          if (diff > 0) goToSlide(current + 1);
+          else goToSlide(current - 1);
+        }
+      });
+
+      // Init
+      updateUI();
+      activateSlide(0);
+    })();
+  </script>
+</body>
+</html>
