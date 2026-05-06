@@ -1,0 +1,84 @@
+{
+  "skill_name": "release-notes-email",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We're shipping Trip Sharing and Driver Location Warnings this week. Trip Sharing lets TCs share trips with stakeholders via a secure link — they download the app to track live. Driver Location Warnings show a banner when GPS is stale. 28 bug fixes, notable one for Kimberly's client font issue. Contributors: Ethan (Eng), Ashry (QA), Eman (QA). Business partners: Robyn (Sales), Julia (CSM). Update goes live tomorrow, app store update required. Enablement doc: https://docs.google.com/document/d/example. Here are screenshot URLs: Step 1: https://example.com/step1.png, Step 2: https://example.com/step2.png, Step 3: https://example.com/step3.png, Step 4: https://example.com/step4.png, Warning: https://example.com/warning.png",
+      "expected_output": "A complete HTML email file with Trip Sharing (5 steps with screenshots), Driver Location Warnings (screenshot + 2 scenario cards), 28 improvements section with notable fix, enablement doc CTA, contributors, business partners, and Savoya footer. All table-based, no SVGs, dark theme.",
+      "assertions": [
+        {"type": "output_not_contains", "value": "<svg", "description": "No inline SVGs — they get stripped in Front/Outlook"},
+        {"type": "output_contains", "value": "<img", "description": "Uses img tags for images"},
+        {"type": "output_contains", "value": "background-color:#0F0F0F", "description": "Dark background theme"},
+        {"type": "output_contains", "value": "DM Sans", "description": "Correct font family"},
+        {"type": "output_contains", "value": "Guided by principle", "description": "Savoya footer tagline"},
+        {"type": "output_contains", "value": "role=\"presentation\"", "description": "Accessible table markup"},
+        {"type": "output_contains", "value": "savoya-logo", "description": "Savoya logo image included"},
+        {"type": "output_contains", "value": "Now Available", "description": "Primary feature badge"},
+        {"type": "output_contains", "value": "Also Shipping", "description": "Secondary feature badge"},
+        {"type": "output_contains", "value": "Improvements", "description": "Bug fixes badge"},
+        {"type": "output_contains", "value": "Contributors", "description": "Contributors section"},
+        {"type": "output_contains", "value": "Business Partners", "description": "Business partners section"},
+        {"type": "output_contains", "value": "Feature Enablement Guide", "description": "Enablement doc CTA"},
+        {"type": "output_contains", "value": "App Store", "description": "App update notice"},
+        {"type": "output_contains", "value": "Notable", "description": "Notable bug fix callout"},
+        {"type": "output_file_extension", "value": ".html", "description": "Output is HTML file"}
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Single feature release: we built a new Booking Confirmation Screen that shows trip details after a booking is confirmed. App only, not on portal. Goes live Monday. 5 minor improvements. Contributors: Alex (Eng), Sam (QA). No enablement doc. Screenshot URL: https://example.com/booking.png",
+      "expected_output": "A complete HTML email with one feature section (Booking Confirmation, copper accent), 5 improvements, contributors, no enablement doc CTA, no business partners. Simpler layout but same design system.",
+      "assertions": [
+        {"type": "output_not_contains", "value": "<svg", "description": "No inline SVGs"},
+        {"type": "output_contains", "value": "background-color:#0F0F0F", "description": "Dark background"},
+        {"type": "output_contains", "value": "Now Available", "description": "Feature badge"},
+        {"type": "output_contains", "value": "Contributors", "description": "Contributors section"},
+        {"type": "output_not_contains", "value": "Feature Enablement Guide", "description": "No enablement doc since none provided"},
+        {"type": "output_contains", "value": "savoya-logo", "description": "Logo present"},
+        {"type": "output_contains", "value": "Guided by principle", "description": "Footer present"},
+        {"type": "output_file_extension", "value": ".html", "description": "Output is HTML"}
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Big quarterly release with 4 features: 1) Enhanced Live Ops Dashboard (app + portal, copper accent), 2) Multi-stop Trip Support (app only, amber), 3) Invoice PDF Export (portal only), 4) Push Notification Preferences (app only). 40 improvements, notable: fixed timezone display for European clients. Contributors: Ethan (Eng), Priya (Eng), Ashry (QA), Eman (QA), Tom (Design). Business partners: Robyn (Sales), Julia (CSM), Mike (Ops). Enablement doc: https://example.com/q3-guide. Goes live next Wednesday. No screenshots available.",
+      "expected_output": "A complete HTML email with 4 feature sections using different color accents, app/portal callouts per feature, no screenshots (text-only step cards), 40 improvements with notable fix, enablement doc CTA, 5 contributors, 3 business partners. Properly handles portal-only features.",
+      "assertions": [
+        {"type": "output_not_contains", "value": "<svg", "description": "No inline SVGs"},
+        {"type": "output_contains", "value": "background-color:#0F0F0F", "description": "Dark background"},
+        {"type": "output_contains", "value": "Now Available", "description": "Primary feature badge"},
+        {"type": "output_contains", "value": "Also Shipping", "description": "Secondary feature badge"},
+        {"type": "output_contains", "value": "Client Portal", "description": "Portal availability mentioned"},
+        {"type": "output_contains", "value": "40", "description": "Correct improvement count"},
+        {"type": "output_contains", "value": "Contributors", "description": "Contributors section"},
+        {"type": "output_contains", "value": "Business Partners", "description": "Business partners section"},
+        {"type": "output_contains", "value": "Feature Enablement Guide", "description": "Enablement doc CTA"},
+        {"type": "output_contains", "value": "Wednesday", "description": "Go-live date mentioned"},
+        {"type": "output_file_extension", "value": ".html", "description": "Output is HTML"}
+      ]
+    }
+  ],
+  "trigger_evals": {
+    "should_trigger": [
+      "create release notes for our app update",
+      "help me build a release email for the team",
+      "we're shipping new features, need an announcement email",
+      "make a release announcement with screenshots",
+      "new release going out tomorrow, help me create the email",
+      "I need release notes for this week's deploy",
+      "can you create a what's new email for the team",
+      "help me announce the new features to the team",
+      "we're releasing Trip Sharing, create the release email"
+    ],
+    "should_not_trigger": [
+      "write a blog post about our product",
+      "create a Jira ticket for the bug",
+      "help me draft a Slack message about the release",
+      "make a presentation about our roadmap",
+      "write a press release for the media",
+      "create a changelog for the developer docs",
+      "help me write API documentation",
+      "design a landing page for the new feature"
+    ]
+  }
+}

@@ -1,0 +1,180 @@
+# --- Swimlane Flow Session State ---
+# Paste this entire block into a new conversation to resume your session.
+# Claude will parse it and pick up where you left off.
+
+session:
+  # Current phase in the interview workflow
+  # Values: opening | business-type | context | revenue | journey | actors |
+  #         process-mapping | pain-discovery | decisions | tool-mapping |
+  #         annotation | diagram-generation | complete
+  phase: "process-mapping"
+
+  # Current step within the phase (1-indexed)
+  step: 7
+
+  # Timestamp of last update
+  last_updated: "2026-04-20T14:30:00Z"
+
+business:
+  # Detected archetype
+  # Values: coach | course-creator | agency | saas | service-provider | creator | hybrid
+  archetype: "coach"
+
+  # If hybrid, list the archetypes
+  hybrid_archetypes: []
+
+  # Business description (user's original words)
+  description: "Executive leadership coaching, 1:1 and small group programs"
+
+  # Context dimensions
+  context:
+    team_size: "solo-plus-va"  # solo | solo-plus-va | small-team | larger-team
+    revenue_model: "high-ticket-packages"
+    monthly_revenue_range: "$10K-$20K"
+    tech_stack:
+      - "Calendly"
+      - "Zoom"
+      - "HoneyBook"
+      - "ConvertKit"
+      - "Google Workspace"
+    volume: "8 active 1:1 clients, 1 group of 6"
+    stage: "growth"  # startup | growth | established | scaling
+
+revenue_streams:
+  - name: "1:1 Coaching"
+    percentage: 70
+    price_range: "$5K-$10K per 3-month package"
+  - name: "Group Program"
+    percentage: 25
+    price_range: "$2K per participant, 6-person cohort"
+  - name: "Speaking Engagements"
+    percentage: 5
+    price_range: "$1K-$3K per event"
+
+# Customer journey stages (confirmed by user)
+journey:
+  primary_stream: "1:1 Coaching"
+  stages:
+    - id: "lead-gen"
+      name: "Lead Generation"
+      status: "mapped"  # pending | mapped | expanded-l2 | expanded-l3
+
+    - id: "nurture"
+      name: "Lead Nurture"
+      status: "mapped"
+
+    - id: "sales"
+      name: "Sales / Close"
+      status: "pending"  # <-- This is where we left off
+
+    - id: "onboarding"
+      name: "Client Onboarding"
+      status: "pending"
+
+    - id: "fulfillment"
+      name: "Coaching Delivery"
+      status: "pending"
+
+    - id: "retention"
+      name: "Retention / Renewal"
+      status: "pending"
+
+# Process nodes captured so far
+processes:
+  lead-gen:
+    nodes:
+      - id: "lg-1"
+        label: "Create LinkedIn content"
+        actor: "owner"
+        annotation: "[HV]"
+        tools: ["LinkedIn", "Notion"]
+
+      - id: "lg-2"
+        label: "Repurpose to email + social"
+        actor: "ai"
+        annotation: "[AUTO]"
+        tools: ["ConvertKit", "Buffer"]
+
+      - id: "lg-3"
+        label: "Published content"
+        actor: "output"
+        annotation: null
+        tools: []
+
+    arrows:
+      - source: "lg-1"
+        target: "lg-2"
+        type: "cross-lane"
+      - source: "lg-2"
+        target: "lg-3"
+        type: "cross-lane"
+
+  nurture:
+    nodes:
+      - id: "nr-1"
+        label: "Email welcome sequence"
+        actor: "ai"
+        annotation: "[AUTO]"
+        tools: ["ConvertKit"]
+
+      - id: "nr-2"
+        label: "DM engagement"
+        actor: "owner"
+        annotation: "[HV]"
+        tools: ["LinkedIn"]
+
+      - id: "nr-3"
+        label: "Warm lead list"
+        actor: "output"
+        annotation: null
+        tools: ["HoneyBook"]
+
+    arrows:
+      - source: "nr-1"
+        target: "nr-2"
+        type: "cross-lane"
+      - source: "nr-2"
+        target: "nr-3"
+        type: "cross-lane"
+
+# Pain points confirmed by user
+pain_points:
+  - node_id: "lg-2"
+    category: "auto"
+    score: 3.8
+    description: "Currently manual — copies content by hand to each platform"
+
+  - node_id: null  # Not yet mapped to a node
+    category: "btl"
+    score: null
+    description: "Proposal creation takes 2-3 days, loses momentum"
+
+# Annotations applied
+annotations:
+  applied:
+    - node_id: "lg-1"
+      category: "protect"
+      score: null
+    - node_id: "lg-2"
+      category: "automate"
+      score: 3.8
+    - node_id: "nr-1"
+      category: "automate"
+      score: 4.2
+    - node_id: "nr-2"
+      category: "protect"
+      score: null
+  pending_review: []
+
+# Drill-down tracking
+drill_downs:
+  - stage_id: "lead-gen"
+    current_level: 1  # 1 = Process Flow, 2 = System Detail, 3 = Execution
+  - stage_id: "nurture"
+    current_level: 1
+
+# Diagrams generated so far
+diagrams_generated:
+  - process: "lead-gen"
+    filename: "coaching-lead-gen-swimlane.drawio"
+    generated_at: "2026-04-20T14:25:00Z"
