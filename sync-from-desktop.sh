@@ -8,6 +8,7 @@
 REPO="$HOME/claude-skills/skills"
 SKILLS_PLUGIN="$HOME/Library/Application Support/Claude/local-agent-mode-sessions/skills-plugin"
 COWORK_BASE="$HOME/Library/Application Support/Claude/local-agent-mode-sessions"
+DOWNLOADS="$HOME/Downloads"
 
 # Find all SKILL.md files across both Desktop skill locations
 find_desktop_skills() {
@@ -15,9 +16,10 @@ find_desktop_skills() {
   find "$COWORK_BASE" -name "SKILL.md" -path "*/skills/*" ! -path "*/skills-plugin/*" 2>/dev/null
 }
 
-# Find .skill zip files in Desktop outputs
+# Find .skill zip files in Desktop outputs and Downloads
 find_skill_files() {
   find "$COWORK_BASE" -name "*.skill" 2>/dev/null
+  find "$DOWNLOADS" -maxdepth 1 -name "*.skill" 2>/dev/null
 }
 
 copy_skill() {
